@@ -52,6 +52,12 @@ class SleepTrackerViewModel(
             night
         }
     }
+
+    private suspend fun insert(night: SleepNight) {
+        withContext(Dispatchers.IO) {
+            database.insert(night)
+        }
+    }
 }
 
 
