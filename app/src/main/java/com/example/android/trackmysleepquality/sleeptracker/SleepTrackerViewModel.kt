@@ -24,6 +24,7 @@ import com.example.android.trackmysleepquality.database.SleepNight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for SleepTrackerFragment.
@@ -40,6 +41,16 @@ class SleepTrackerViewModel(
 
     init {
         initializeTonight()
+    }
+
+    private suspend fun getTonightFromDatabase(): SleepNight? {
+        return withContext(Dispatchers.IO) {
+            var night = database.getTonight()
+            if (night?.endTimeMilli != night?.startTimeMilli) {
+                night = null
+            }
+            night
+        }
     }
 }
 
